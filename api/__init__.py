@@ -3,6 +3,7 @@
 #----------------------------------------------------------------------------#
 
 from flask import (Flask, jsonify)
+from api.auth import requires_auth
 
 #----------------------------------------------------------------------------#
 # App Config.
@@ -16,8 +17,8 @@ app.config.from_pyfile('config.py')
 # Controllers.
 #----------------------------------------------------------------------------#
 
-
 @app.route('/')
+@requires_auth()
 def index():
     return jsonify({
         'hello': 'world',
