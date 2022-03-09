@@ -19,27 +19,15 @@ class AuthError(Exception):
 
 def get_token_auth_header():
     if 'Authorization' not in request.headers:
-        abort(401)
-        raise AuthError({
-            'code': 'Unauthorized',
-            'description': 'Request lacks valid authentication credentials.'
-        }, 401)
+        abort(401, 'Unauthorized, request lacks valid authentication credentials.')
 
     token = request.headers['Authorization'].split(' ')
 
     if len(token) != 2:
-        abort(401)
-        raise AuthError({
-            'code': 'Unauthorized',
-            'description': 'Request lacks valid authentication credentials.'
-        }, 401)
+        abort(401, 'Unauthorized, request lacks valid authentication credentials.')
 
     elif token[0].lower() != 'bearer':
-        abort(401)
-        raise AuthError({
-            'code': 'Unauthorized',
-            'description': 'Request lacks valid authentication credentials.'
-        }, 401)
+        abort(401, 'Unauthorized, request lacks valid authentication credentials.')
 
     return token[1]
 
@@ -57,24 +45,12 @@ def verify_decode_jwt(token):
         return payload
     
     except jwt.ExpiredSignatureError:
-        abort(401)
-        raise AuthError({
-            'code': 'token_expired',
-            'description': 'Token expired.'
-        }, 401)
+        abort(401, 'Token has expired.')
 
     except jwt.JWTClaimsError:
-        abort(401)
-        raise AuthError({
-            'code': 'invalid_claims',
-            'description': 'Incorrect claims. Please, check the audience and issuer.'
-        }, 401)
+        abort(401, 'Incorrect claims. Please, check the audience and issuer.')
     except Exception:
-        abort(400)
-        raise AuthError({
-            'code': 'invalid_header',
-            'description': 'Unable to parse authentication token.'
-        }, 400)
+        abort(400, 'Invalid_header. Unable to parse authentication token.')
 
 
 def requires_auth():
@@ -83,10 +59,7 @@ def requires_auth():
         def wrapper(*args, **kwargs):
             token = get_token_auth_header()
             
-            try:
-                payload = verify_decode_jwt(token)
-            except:
-                abort(401)
+            payload = verify_decode_jwt(token)
                 
             return f(*args, **kwargs)
         return wrapper
