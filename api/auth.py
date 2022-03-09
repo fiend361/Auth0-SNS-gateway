@@ -1,3 +1,4 @@
+import os
 
 from functools import wraps
 from flask import request, abort
@@ -5,11 +6,10 @@ from flask import request, abort
 from jose import jwt
 
 
-AUTH0_DOMAIN = 'fiend361.us.auth0.com'
 ALGORITHMS = ['HS256']
-subject = 'auth0'
-audience = 'Coffee'
-key = 'ofienrowfbpro0rw87fb0w48bfe948fb40'
+SUBJECT = os.environ['token_subject']
+AUDIENCE = os.environ['token_audience']
+SECTRET_KEY = os.environ['token_key']
 
 
 class AuthError(Exception):
@@ -37,10 +37,10 @@ def verify_decode_jwt(token):
     try:
         payload = jwt.decode(
             token,
-            key,
+            SECTRET_KEY,
             algorithms=ALGORITHMS,
-            subject=subject,
-            audience=audience
+            subject=SUBJECT,
+            audience=AUDIENCE
         )
         return payload
     
