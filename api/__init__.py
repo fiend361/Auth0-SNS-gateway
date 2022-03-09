@@ -3,7 +3,9 @@
 #----------------------------------------------------------------------------#
 
 from flask import (Flask, jsonify)
+
 from api.auth import requires_auth
+from api.request import requires_body
 
 #----------------------------------------------------------------------------#
 # App Config.
@@ -17,9 +19,10 @@ app.config.from_pyfile('config.py')
 # Controllers.
 #----------------------------------------------------------------------------#
 
-@app.route('/')
+@app.route('/send_otp', methods=['POST'])
 @requires_auth()
-def index():
+@requires_body('recipient body sender')
+def send_otp():
     return jsonify({
         'hello': 'world',
     }), 200
@@ -52,14 +55,6 @@ def error_404(error):
         'error': 404,
         'message': error.description
     }), 404
-    
-@app.errorhandler(409)
-def error_409(error):
-    return jsonify({
-        'success': False,
-        'error': 409,
-        'message': error.description
-    }), 409
     
 @app.errorhandler(500)
 def error_500(error):
