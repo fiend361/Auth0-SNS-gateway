@@ -1,14 +1,15 @@
-import json
-from flask import request, abort
+
 from functools import wraps
+from flask import request, abort
+
 from jose import jwt
 
 
 AUTH0_DOMAIN = 'fiend361.us.auth0.com'
-ALGORITHMS = ['RS256']
+ALGORITHMS = ['HS256']
 subject = 'auth0'
 audience = 'Coffee'
-key = 'tg098j34g0n#2p9b738d2-4324r634234rd346rdf34wdqefrfq34rf43qrfdq23fq3*4frf'
+key = 'ofienrowfbpro0rw87fb0w48bfe948fb40'
 
 
 class AuthError(Exception):
@@ -19,15 +20,15 @@ class AuthError(Exception):
 
 def get_token_auth_header():
     if 'Authorization' not in request.headers:
-        abort(401, 'Unauthorized, request lacks valid authentication credentials.')
+        abort(401, 'Unauthorized. Request lacks valid authentication credentials.')
 
     token = request.headers['Authorization'].split(' ')
 
     if len(token) != 2:
-        abort(401, 'Unauthorized, request lacks valid authentication credentials.')
+        abort(401, 'Unauthorized. Request lacks valid authentication credentials.')
 
     elif token[0].lower() != 'bearer':
-        abort(401, 'Unauthorized, request lacks valid authentication credentials.')
+        abort(401, 'Unauthorized. Request lacks valid authentication credentials.')
 
     return token[1]
 
@@ -41,16 +42,16 @@ def verify_decode_jwt(token):
             subject=subject,
             audience=audience
         )
-
         return payload
     
     except jwt.ExpiredSignatureError:
         abort(401, 'Token has expired.')
 
     except jwt.JWTClaimsError:
-        abort(401, 'Incorrect claims. Please, check the audience and issuer.')
+        abort(401, 'Incorrect claims. Please, check the subject and the audience.')
+
     except Exception:
-        abort(400, 'Invalid_header. Unable to parse authentication token.')
+        abort(400, 'Invalid header. Unable to parse authentication token.')
 
 
 def requires_auth():
