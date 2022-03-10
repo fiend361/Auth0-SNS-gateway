@@ -3,6 +3,7 @@ appdirs==1.4.4
 astroid==2.5.1
 Authlib==0.15.3
 Babel==2.9.1
+boto3==1.20.52
 click==7.1.2
 docutils==0.15.2
 ecdsa==0.16.1
