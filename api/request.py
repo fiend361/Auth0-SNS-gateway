@@ -1,5 +1,5 @@
 
-from flask import request, jsonify, abort
+from flask import request, abort
 from functools import wraps
 
 

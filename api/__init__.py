@@ -2,7 +2,8 @@
 # Imports
 #----------------------------------------------------------------------------#
 
-from flask import (Flask, jsonify, request)
+from flask import (Flask, jsonify)
+from flask import request as req
 
 from api.auth import requires_auth
 from api.request import requires_body
@@ -25,7 +26,7 @@ app.config.from_pyfile('config.py')
 @requires_auth()
 @requires_body('recipient body sender')
 def send_otp():
-    body = request.get_json()
+    body = req.get_json()
     target_phone_number = body['recipient']
     message = body['body']
     
