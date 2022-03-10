@@ -2,10 +2,12 @@
 # Imports
 #----------------------------------------------------------------------------#
 
-from flask import (Flask, jsonify)
+from flask import (Flask, jsonify, request)
 
 from api.auth import requires_auth
 from api.request import requires_body
+
+import api.sns as sns
 
 #----------------------------------------------------------------------------#
 # App Config.
@@ -23,8 +25,17 @@ app.config.from_pyfile('config.py')
 @requires_auth()
 @requires_body('recipient body sender')
 def send_otp():
+    body = request.get_json()
+    target_phone_number = body['recipient']
+    message = body['body']
+    
+    message_id, status_code = sns.publish_text_message(phone_number=target_phone_number, 
+                                                       message=message)
+    
     return jsonify({
-        'hello': 'world',
+        'success': True,
+        'message_id': message_id,
+        'status_code': status_code
     }), 200
     
 
