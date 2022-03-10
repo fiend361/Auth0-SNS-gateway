@@ -7,9 +7,9 @@ from jose import jwt
 
 
 ALGORITHMS = ['HS256']
-SUBJECT = os.environ.get('token_subject', 'auth0')
-AUDIENCE = os.environ.get('token_audience', 'auth0_sns_gateway')
-SECTRET_KEY = os.environ.get('token_key', 'ofienrowfbpro0rw87fb0w48bfe948f2')
+SUBJECT = os.environ.get('TOKEN_SUBJECT', 'auth0')
+AUDIENCE = os.environ.get('TOKEN_AUDIENCE', 'auth0_sns_gateway')
+SECTRET_KEY = os.environ.get('TOKEN_SECRET_KEY', 'ofienrowfbpro0rw87fb0w48bfe948f2')
 
 
 class AuthError(Exception):

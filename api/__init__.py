@@ -24,7 +24,7 @@ app.config.from_pyfile('config.py')
 
 @app.route('/send_otp', methods=['POST'])
 @requires_auth()
-@requires_body('recipient body sender')
+@requires_body('recipient body')
 def send_otp():
     body = req.get_json()
     target_phone_number = body['recipient']
